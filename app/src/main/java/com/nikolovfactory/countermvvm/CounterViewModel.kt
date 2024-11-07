@@ -9,4 +9,13 @@ class CounterViewModel : ViewModel(){
 
     // Expose the count as an immutable state to accessed outside the class
     val count : MutableState<Int> = _count
+
+    fun increment() {
+        _count.value++
+    }
+
+    fun decrement() {
+        _count.value--
+    }
+
 }

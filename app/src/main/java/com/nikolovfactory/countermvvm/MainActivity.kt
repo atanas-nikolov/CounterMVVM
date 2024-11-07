@@ -3,6 +3,7 @@ package com.nikolovfactory.countermvvm
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,13 +29,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel: CounterViewModel by viewModels()
             CounterMVVMTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TheCounterApp()
+                    TheCounterApp(viewModel)
                 }
             }
         }
@@ -42,31 +44,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TheCounterApp(){
-    val count = remember { mutableStateOf(0) }
+fun TheCounterApp(viewModel: CounterViewModel){
 
-    fun increment() {
-        count.value++
-    }
-
-    fun decrement() {
-        count.value--
-    }
 
     Column (modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
         ){
-        Text(text = "Count: ${count.value}",
+        Text(text = "Count: ${viewModel.count.value}",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(16.dp))
         Row {
-            Button(onClick = { increment() }) {
+            Button(onClick = { viewModel.increment() }) {
                 Text(text = "Increment")
             }
-            Button(onClick = { decrement() }) {
+            Button(onClick = { viewModel.decrement() }) {
                 Text(text = "Decrement")
             }
 
